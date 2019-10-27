@@ -18,3 +18,9 @@ Open Terminal and execute the following command to set the root password:
 ### Database Management
 To manage your databases use [Sequel Pro](http://www.sequelpro.com).   
 
+### Create User And DataBase
+* Goto db/scripts directory
+* Run the scripts : `$./credb.sh`
+### Create the tables
+* Goto db/scripts dorectory
+* Run the scripts : `$./setupdb.sh`

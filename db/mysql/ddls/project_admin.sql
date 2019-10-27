@@ -1,7 +1,7 @@
-DROP TABLE project_admin IF EXISTS; 
+DROP TABLE IF EXISTS project_admin; 
 CREATE TABLE project_admin (
-	admin_id VARCHAR(1000) NOT NULL,
-	password VARCHAR(1000) NOT NULL,
+	admin_id VARCHAR(500) NOT NULL,
+	password VARCHAR(500) NOT NULL,
 	max_sharing_point INT,
 	encash_points INT, 
 	total_venders BIGINT,
