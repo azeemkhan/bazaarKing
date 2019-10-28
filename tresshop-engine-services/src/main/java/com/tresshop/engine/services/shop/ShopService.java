@@ -1,6 +1,6 @@
-package com.tresmoto.engine.services.shop;
+package com.tresshop.engine.services.shop;
 
-import com.tresmoto.engine.client.shop.ShopLocationDetails;
+import com.tresshop.engine.client.shop.ShopLocationDetails;
 
 public interface ShopService {
 

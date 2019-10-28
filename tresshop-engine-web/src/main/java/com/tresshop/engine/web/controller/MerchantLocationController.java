@@ -1,8 +1,8 @@
 package com.tresshop.engine.web.controller;
 
-import com.tresmoto.engine.base.validator.MerchantValidator;
-import com.tresmoto.engine.client.shop.ShopLocationDetails;
-import com.tresmoto.engine.services.shop.ShopService;
+import com.tresshop.engine.base.validator.MerchantValidator;
+import com.tresshop.engine.client.shop.ShopLocationDetails;
+import com.tresshop.engine.services.shop.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,7 @@ public class MerchantLocationController {
             produces = {MediaType.APPLICATION_JSON}
     )
     public ResponseEntity<String> findShopByLocation(@RequestBody ShopLocationDetails shopLocationDetails) {
+        log.info("going to validate shop and description is description {}", shopLocationDetails.getShopDescription());
         merchantValidator.validateMerchantDetails(shopLocationDetails);
         return new ResponseEntity<>(shopService.onBoardShop(shopLocationDetails), HttpStatus.OK);
     }

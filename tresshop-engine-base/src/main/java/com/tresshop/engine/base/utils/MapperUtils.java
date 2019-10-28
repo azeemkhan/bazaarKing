@@ -1,4 +1,4 @@
-package com.tresmoto.engine.base.utils;
+package com.tresshop.engine.base.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

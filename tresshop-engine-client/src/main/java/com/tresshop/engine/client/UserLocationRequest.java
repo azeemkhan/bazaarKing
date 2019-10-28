@@ -1,4 +1,4 @@
-package com.tresmoto.engine.client;
+package com.tresshop.engine.client;
 
 import lombok.Getter;
 import lombok.Setter;

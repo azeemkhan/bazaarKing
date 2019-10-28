@@ -1,4 +1,4 @@
-package com.tresmoto.engine.storage.entity;
+package com.tresshop.engine.storage.entity;
 
 import java.util.Date;
 

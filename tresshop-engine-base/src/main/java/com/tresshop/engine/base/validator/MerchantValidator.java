@@ -1,7 +1,7 @@
-package com.tresmoto.engine.base.validator;
+package com.tresshop.engine.base.validator;
 
-import com.tresmoto.engine.base.exception.MerchantException;
-import com.tresmoto.engine.client.shop.ShopLocationDetails;
+import com.tresshop.engine.base.exception.MerchantException;
+import com.tresshop.engine.client.shop.ShopLocationDetails;
 import org.springframework.stereotype.Component;
 
 @Component

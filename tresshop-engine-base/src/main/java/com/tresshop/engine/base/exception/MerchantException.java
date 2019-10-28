@@ -1,4 +1,4 @@
-package com.tresmoto.engine.base.exception;
+package com.tresshop.engine.base.exception;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

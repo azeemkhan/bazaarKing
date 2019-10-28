@@ -1,7 +1,7 @@
-package com.tresmoto.engine.services;
+package com.tresshop.engine.services;
 
-import com.tresmoto.engine.client.UserLocationRequest;
-import com.tresmoto.engine.client.shop.ShopLocationDetails;
+import com.tresshop.engine.client.UserLocationRequest;
+import com.tresshop.engine.client.shop.ShopLocationDetails;
 
 
 import java.util.List;

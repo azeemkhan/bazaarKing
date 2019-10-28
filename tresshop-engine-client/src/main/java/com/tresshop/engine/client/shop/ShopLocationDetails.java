@@ -1,4 +1,4 @@
-package com.tresmoto.engine.client.shop;
+package com.tresshop.engine.client.shop;
 
 import lombok.Data;
 
