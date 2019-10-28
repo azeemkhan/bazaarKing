@@ -1,0 +1,53 @@
+{
+  "baseRequest": {
+    "channelInfo": {
+      "appType": "IOS",
+      "appVersion": "string",
+      "channelType": "WEB",
+      "deviceId": "string",
+      "nthOrderOnChannel": 0,
+      "osType": "WINDOW",
+      "osVersion": "string",
+      "sessionId": "string"
+    },
+    "pageType": "string",
+    "tenantId": "AJIO",
+    "userInfo": {
+      "email": "lalchand.mali@ril.com",
+      "phoneNumber": "8073983963",
+      "profileName": "Lalchand Mali",
+      "userId": "299c8eae-c0a5-4be9-a39d-436ba95e743a"
+    }
+  },
+  "cartId": "ORD006278111",
+  "benefitCartItemRequests": [
+    {
+      "brand": "Levis",
+      "brick": "BRICK001",
+      "catalogId": "CATALOG001",
+      "category": "MEN",
+      "name": "LEVIS T-SHIRT",
+      "price": 1531,
+      "quantity": 2,
+      "season": "WINTER",
+      "skuId": "ITMLEVIS001",
+      "subCategory": "MEN",
+      "thumbnailImgUrl": "http://www.ajio.com/img/levis-itm-1.jpg"
+    },
+    {
+      "brand": "PUMA",
+      "brick": "BRICK002",
+      "catalogId": "CATALOG001",
+      "category": "MEN",
+      "name": "PUMA T-SHIRT",
+      "price": 522,
+      "quantity": 1,
+      "season": "SUMMER",
+      "skuId": "ITMPUMA001",
+      "subCategory": "MEN",
+      "thumbnailImgUrl": "http://www.ajio.com/img/levis-itm-1.jpg"
+    }
+  ],
+  "createEntry": true
+
+}

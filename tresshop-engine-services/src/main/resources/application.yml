@@ -1,0 +1,44 @@
+rest:
+  url:
+    paytm:
+      connection-timeout: 5000
+      read-timeout: 5000
+      mid: OAJI1168155660467601
+      web-site: WEBSTAGING
+      industry-type: Retail
+      m-key: rd!xZC0grzGSBaTG
+      template-name: paytm
+      upi-transaction: https://securegw-stage.paytm.in/theia/processTransaction
+      callback: http://localhost:9090/payment/callbacks/paytm
+      transaction-status: https://securegw-stage.paytm.in/order/status
+    bill-desk:
+      connection-timeout: 5000
+      read-timeout: 5000
+      mid: RILTST
+      user-id: riltst
+      checksum-key: LO9eurhPwb1X
+      template-name: billdesk
+      initiation: https://www.billdesk.com/pgidsk/PGIDirectRequest?reqid=BDRDF011
+      re-initiation: https://www.billdesk.com/pgidsk/PGIDirectRequest?reqid=BDRDF001
+      net-banking-wallet: https://www.billdesk.com/pgidsk/PGIDirectRequest?reqid=BDRDF003
+      upi-payment: https://www.billdesk.com/pgidsk/PGIDirectRequest?reqid=BDRDF007
+      authorize: https://www.billdesk.com/pgidsk/PGIDirectRequest?reqid=BDRDF002
+      query: https://www.billdesk.com/pgidsk/PGIQueryController
+      callback:
+        s2s: http://10.129.80.124:8888/payment/callbacks/billdesk
+        card: http://10.129.80.124:8888/payment/callbacks/billdesk/card
+        net-banking-wallet:  http://10.129.80.124:8888/payment/callbacks/billdesk/banking
+        upi: http://10.129.80.124:8888/payment/callbacks/billdesk/upi
+
+    razorpay:
+      callback:
+        b2b: http://10.129.80.124:8888/payment/callbacks/razorpay/b2b
+
+##### Jio Prime points ###########
+jio:
+  prime:
+    get-active-balance-url: http://10.21.79.38:8080/rcs/prime-point/getActualPoint
+    redeem-active-points-url: http://10.21.79.38:8080/rcs/prime-point/redeemActivePoints
+    check-user-exist-url: http://10.21.79.38:8080/rcs/prime-point/checkPrimeUser
+    add-prime-user-url: http://10.21.79.38:8080/rcs/prime-point/addPrimeUser
+    credit-points-url: http://10.21.79.38:8080/rcs/prime-point/addPendingPoint
