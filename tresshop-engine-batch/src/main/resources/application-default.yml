@@ -1,0 +1,140 @@
+jasypt:
+  encryptor:
+    algorithm: PBEWITHSHA1ANDDESEDE
+    stringOutputType: hexadecimal
+    bean: encryptorBean
+    providerName: SunJCE
+    password: ${JASPYT_PASSWORD}
+
+spring:
+  datasource:
+    url: ENC(DC481D2DA50C6B4B4A2EF1EA68BD5C790E8BDF28275C0140C3C42250E25A67A43FD4F2A3C0133DDB175B856902BD980F7433AE051F9B68D1)
+    username: ENC(76410BC895E11A2611998CCF40D30255A52A5D0A788AE28E)
+    password: ENC(A7011F0FA2C0FF42DB76DB6BC86F6E6D36CB7EEBAD2DCDC3706A237D7A8E085C)
+    driverClassName: oracle.jdbc.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    hibernate.ddl-auto: update
+    show-sql: false
+    generate-ddl: true
+  properties:
+    hibernate.format_sql: true
+    hibernate.enable_lazy_load_no_trans: true
+    org.hibernate.envers.audit_table_suffix: _activity
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+      enabled: true
+      path: /h2
+  batch:
+    job:
+      enabled: false
+    chunk:
+      size: 51
+  event-status:
+    not-to-query: SUCCESS,INVALID
+  transaction-status:
+    query: PENDING, ABORTED
+
+logging:
+  config: classpath:logback-spring.xml
+  levels:
+    org.springframework: INFO
+    com.ril.service.batch: DEBUG
+    org.hibernate.SQL: INFO
+  appenders:
+    name: rollingfile
+    rollingfile:
+      directory: /home/payments/opt/payment-engine-batch/log
+      prefix: payment-engine-batch
+
+
+
+clevertap:
+  api:
+    push: https://in.api.clevertap.com/1/send/push.json
+    upload: https://in.api.clevertap.com/1/upload
+  passCode: AYO-JOV-YHKL
+  accountId: TEST-485-5Z9-WZ5Z
+  group: AjioCash
+  account:
+    passCode: X-CleverTap-Passcode
+    id: X-CleverTap-Account-Id
+
+
+
+expiring:
+  alert:
+    cycle: 360
+activation:
+  cycle: 2
+expired:
+  cycle: 2
+recently:
+  updated:
+    cycle: 20
+promo:
+  active:
+    cycle: 2
+  expire:
+    cycle: 2
+
+process-burn:
+  cycle: 5
+
+maxAttempts: 3
+backOffDelay: 20
+
+template:
+  sms:
+    expiring: 123
+    expired: expired
+    activate: activated
+  email:
+    expiring: expiringMail
+    expired: expiredMail
+    activate: activatedMail
+
+batch:
+  initialize-schema: never
+  initializer:
+    enabled: false
+
+
+org:
+  quartz:
+    scheduler:
+      instanceName: AjioCashScheduler
+      instanceId: AUTO
+    threadPool:
+      threadCount: 4
+    jobStore:
+      class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      driverDelegateClass: org.quartz.impl.jdbcjobstore.oracle.OracleDelegate
+      useProperties: false
+      dataSource: myDS
+      tablePrefix: QRTZ_
+      misfireThreshold: 60000
+      clusterCheckinInterval: 300000
+      isClustered: true
+    dataSource:
+      myDS:
+        driver : oracle.jdbc.OracleDriver
+        URL : jjdbc:oracle:thin:@//10.129.34.183:1521/PMTSRVDB
+        user : paymentservice
+        password : rilpaymentservice
+        maxConnections : 11
+        validationQuery : select 0 from dual
+    plugin:
+      shutdownHook:
+        class: org.quartz.plugins.management.ShutdownHookPlugin
+        cleanShutdown: true
+
+rest:
+  event:
+    url: https://payment-uat.services.ajio.com/payment-engine/api/v1/event/process
+    connection-timeout: 5000000
+    read-timeout: 5000000
+  processTransaction:
+    url: https://payment-uat.services.ajio.com/payment-engine/api/v1/transaction/pending/process

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../tresmoto" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../tresshop" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../TresMoto" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../payment-engine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../tresmoto" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/PaymentService" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/ajio-service-batch" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/new_project/PaymentService" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/new_project/payment-engine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/new_project/realeae_1.2/payment-engine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/new_project/release/payment-engine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/payment-engine" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/payment-engine-batch" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/payment-enginee-batch" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Workspace/project/payment-engine" value="PREVIEW" />
+        <entry key="$USER_HOME$/Downloads/demo" value="PREVIEW" />
+        <entry key="$USER_HOME$/Downloads/demo 2" value="PREVIEW" />
+        <entry key="$USER_HOME$/Downloads/demo/src" value="PREVIEW" />
+        <entry key="$USER_HOME$/Downloads/pricing-computation-rs" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="976" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="LombokPluginEnabledInProject" value="true" />
+    <property name="LombokPluginIS_BUILDER_Enabled" value="true" />
+    <property name="LombokPluginIS_CONSTRUCTOR_Enabled" value="true" />
+    <property name="LombokPluginIS_DELEGATE_Enabled" value="true" />
+    <property name="LombokPluginIS_LOG_Enabled" value="true" />
+    <property name="LombokPluginIS_LOMBOK_VERSION_CHECK_Enabled" value="false" />
+    <property name="LombokPluginIS_MISSING_LOMBOK_CHECK_Enabled" value="true" />
+    <property name="LombokPluginIS_VAL_Enabled" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="Lombok plugin" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

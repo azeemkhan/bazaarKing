@@ -1,0 +1,11 @@
+##### service common property ############
+server:
+  port: 9099
+  servlet.context-path: /paymentenginebatch
+spring:
+  application:
+    name: payment-enginee-batch
+  profiles:
+    active: ${PE_BATCH_PROFILE:uat}
+  main:
+    allow-bean-definition-overriding: true
