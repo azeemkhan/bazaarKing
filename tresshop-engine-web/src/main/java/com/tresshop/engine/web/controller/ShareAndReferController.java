@@ -3,7 +3,6 @@ package com.tresshop.engine.web.controller;
 import com.tresshop.engine.client.rewards.ShareAndReferRequest;
 import com.tresshop.engine.client.rewards.ShareAndReferResponse;
 import com.tresshop.engine.services.ShareAndReferService;
-import com.tresshop.engine.services.impl.ShareAndReferServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
