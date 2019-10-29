@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "share_and_refer")
+@IdClass(ShareAndReferEntity.CompositeKeys.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class ShareAndReferEntity {
     private String fromUser;
 
     @Id
-    @Column(name = "from_user", nullable = false, unique = true)
+    @Column(name = "to_user", nullable = false, unique = true)
     private String toUser;
 
     @Column(name = "type", nullable = false)
@@ -43,4 +43,26 @@ public class ShareAndReferEntity {
 
     @Column(name = "lastUpdated_ts", nullable = false)
     private Timestamp lastUpdatedTs;
+
+    //In Case of composite keys we have to create a IdClass
+    static class CompositeKeys implements Serializable {
+        private String fromUser;
+        private String code;
+        private String toUser;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CompositeKeys ids = (CompositeKeys) o;
+            return Objects.equals(fromUser, ids.fromUser) &&
+                    Objects.equals(code, ids.code) &&
+                    Objects.equals(toUser, ids.toUser);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(fromUser, code, toUser);
+        }
+    }
 }
