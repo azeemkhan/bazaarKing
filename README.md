@@ -1,4 +1,4 @@
-Payment Engine
+Merchant Marketing Engine
 
 A multi-merchant shopping platform.
 
