@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -20,11 +21,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAsync
 @SpringBootConfiguration
 @EnableEncryptableProperties
-@ComponentScan(basePackages = {"com.tresmoto"})
-@SpringBootApplication(scanBasePackages = {"com.tresmoto"})
-@EnableJpaRepositories(basePackages = {"com.tresmoto.engine.storage"})
-@EntityScan(basePackages = {"com.tresmoto.engine.storage"})
+@EnableAutoConfiguration
 @EnableTransactionManagement
+@ComponentScan(basePackages = {"com.tresshop"})
+@EnableJpaRepositories(basePackages = {"com.tresshop.engine.storage"})
+@EntityScan(basePackages = {"com.tresshop.engine.storage"})
 public class PaymentEngineWebApplication {
 
 

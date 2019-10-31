@@ -9,7 +9,10 @@ public class UUIDUtils {
 
     public String createUniqueIdForMerchant() {
         return String.valueOf(Generators.timeBasedGenerator().generate());
+    }
 
+    public String createUniqueIdForReward() {
+        return String.valueOf(Generators.timeBasedGenerator().generate());
     }
 
 
