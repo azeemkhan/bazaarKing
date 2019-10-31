@@ -76,7 +76,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
         rewardsService.createReward(shareAndReferRequest.getFromUser());
 
-        return populateShareAndReferResponse("Referred Successfully. Congratulations! won scratch card");
+        return populateShareAndReferResponse(ResponseConstants.REFERRED_SCRATCH_CARD_WON_MSG);
     }
 
     @Override
@@ -98,17 +98,17 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                     "Something went wrong while inserting share");
         }
         Optional<List<ShareAndReferEntity>> shareAndReferEntities = Optional.empty();
+        int shareCounts = 0;
         try {
-            shareAndReferEntities =
-                    shareAndReferRepository.findUserDataByType(
-                            shareAndReferRequest.getFromUser(),
-                            RewardTypes.SHARE.getName());
+            shareCounts = shareAndReferRepository.findCountUserDataByType(
+                    shareAndReferRequest.getFromUser(),
+                    RewardTypes.SHARE.getName());
         } catch (Exception ex) {
             log.error("Something went wrong while fetching share from: {}, type: {}",
                     shareAndReferRequest.getFromUser(), shareAndReferRequest.getType());
         }
 
-        if (shareAndReferEntities.isPresent() && isRewardEligible(shareAndReferEntities.get())) {
+        if (shareAndReferEntities.isPresent() && isRewardEligible(shareCounts)) {
             rewardsService.createReward(shareAndReferRequest.getFromUser());
             return populateShareAndReferResponse("Congratulations! won scratch card");
         }
@@ -150,6 +150,10 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private boolean isRewardEligible(List<ShareAndReferEntity> shareAndReferEntities) {
         return (shareAndReferEntities.size() * getShareRewardPoints()) % getRewardThreshold() == 0;
+    }
+
+    private boolean isRewardEligible(int sharesCount) {
+        return (sharesCount * getShareRewardPoints()) % getRewardThreshold() == 0;
     }
 
     private Integer getRewardThreshold() {
