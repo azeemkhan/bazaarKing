@@ -29,9 +29,20 @@ public class ShareAndReferController {
             consumes = {MediaType.APPLICATION_JSON},
             produces = {MediaType.APPLICATION_JSON}
     )
-    public ResponseEntity<ShareAndReferResponse> createShareAndRefer(
+    public ResponseEntity<ShareAndReferResponse> createShare(
             @RequestBody ShareAndReferRequest shareAndReferRequest) {
         return new ResponseEntity<>(
-                shareAndReferService.shareAndRefer(shareAndReferRequest), HttpStatus.OK);
+                shareAndReferService.share(shareAndReferRequest), HttpStatus.OK);
+    }
+
+    @PostMapping(
+            value = "/refer",
+            consumes = {MediaType.APPLICATION_JSON},
+            produces = {MediaType.APPLICATION_JSON}
+    )
+    public ResponseEntity<ShareAndReferResponse> createRefer(
+            @RequestBody ShareAndReferRequest shareAndReferRequest) {
+        return new ResponseEntity<>(
+                shareAndReferService.refer(shareAndReferRequest), HttpStatus.OK);
     }
 }

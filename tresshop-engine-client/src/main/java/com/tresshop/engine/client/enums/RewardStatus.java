@@ -1,16 +1,16 @@
 package com.tresshop.engine.client.enums;
 
-public enum RewardTypes {
-    REFER("refer"), SHARE("share"), PRICE("price"), OFFER("offer");
+public enum RewardStatus {
+
+    PENDING("pending"), FAILED("failed"), COMPLETED("completed");
 
     private String name;
 
-    RewardTypes(String name) {
+    RewardStatus(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
 }

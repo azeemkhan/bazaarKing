@@ -4,6 +4,6 @@ import com.tresshop.engine.client.rewards.ShareAndReferRequest;
 import com.tresshop.engine.client.rewards.ShareAndReferResponse;
 
 public interface ShareAndReferService {
-    ShareAndReferResponse shareAndRefer(ShareAndReferRequest shareAndReferRequest);
+    ShareAndReferResponse share(ShareAndReferRequest shareAndReferRequest);
     ShareAndReferResponse refer(ShareAndReferRequest shareAndReferRequest);
 }

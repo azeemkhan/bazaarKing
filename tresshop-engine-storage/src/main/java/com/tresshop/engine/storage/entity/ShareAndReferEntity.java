@@ -41,7 +41,7 @@ public class ShareAndReferEntity {
     @Column(name = "created_ts", nullable = false)
     private Timestamp createdTs;
 
-    @Column(name = "lastUpdated_ts", nullable = false)
+    @Column(name = "last_Updated_ts", nullable = false)
     private Timestamp lastUpdatedTs;
 
     //In Case of composite keys we have to create a IdClass

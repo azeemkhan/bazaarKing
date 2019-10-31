@@ -37,6 +37,6 @@ public class RewardsEntity implements Serializable {
     @Column(name = "created_ts", nullable = false)
     private Timestamp createdTs;
 
-    @Column(name = "lastUpdated_ts", nullable = false)
+    @Column(name = "last_Updated_ts", nullable = false)
     private Timestamp lastUpdatedTs;
 }

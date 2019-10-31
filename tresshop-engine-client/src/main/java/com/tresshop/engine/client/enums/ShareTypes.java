@@ -1,16 +1,15 @@
 package com.tresshop.engine.client.enums;
 
-public enum RewardTypes {
-    REFER("refer"), SHARE("share"), PRICE("price"), OFFER("offer");
+public enum ShareTypes {
+    PRODUCT("product"), MERCHANT("merchant");
 
     private String name;
 
-    RewardTypes(String name) {
+    ShareTypes(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
 }

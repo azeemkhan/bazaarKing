@@ -17,4 +17,7 @@ public class ShareAndReferRequest {
 
     @JsonProperty(required = true)
     private String platform;
+
+    @JsonProperty(required = false)
+    private String code;
 }
