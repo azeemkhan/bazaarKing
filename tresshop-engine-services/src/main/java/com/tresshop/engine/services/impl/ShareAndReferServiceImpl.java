@@ -97,7 +97,6 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Something went wrong while inserting share");
         }
-        Optional<List<ShareAndReferEntity>> shareAndReferEntities = Optional.empty();
         int shareCounts = 0;
         try {
             shareCounts = shareAndReferRepository.findCountUserDataByType(
@@ -108,7 +107,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                     shareAndReferRequest.getFromUser(), shareAndReferRequest.getType());
         }
 
-        if (shareAndReferEntities.isPresent() && isRewardEligible(shareCounts)) {
+        if (isRewardEligible(shareCounts)) {
             rewardsService.createReward(shareAndReferRequest.getFromUser());
             return populateShareAndReferResponse("Congratulations! won scratch card");
         }
