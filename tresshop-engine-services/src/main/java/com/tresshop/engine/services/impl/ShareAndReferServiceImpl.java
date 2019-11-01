@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                 shareAndReferMapper.populateShareAndReferEntity(
                         shareAndReferRequest,
                         generateReferCode(shareAndReferRequest),
-                        RewardTypes.REFER,
+                        RewardTypes.REFER_PENDING,
                         getReferRewardPoints());
 
         try {
@@ -74,7 +75,48 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                     "Something went wrong! Please refer again");
         }
 
-        rewardsService.createReward(shareAndReferRequest.getFromUser());
+        return populateShareAndReferResponse(ResponseConstants.REFERRED_SUCCESS_MSG);
+    }
+
+    @Override
+    public ShareAndReferResponse redeemRefer(ShareAndReferRequest shareAndReferRequest) {
+        if (StringUtils.isEmpty(shareAndReferRequest.getCode())) {
+            log.error("Invalid refer code for shareAndReferRequest: {}",
+                    shareAndReferRequest.toString());
+            throw new ShareAndReferException(HttpStatus.BAD_REQUEST, "Invalid Refer Code");
+        }
+        try {
+            Optional<ShareAndReferEntity> shareAndReferEntity =
+                    shareAndReferRepository.findUserWithReferCode(
+                            shareAndReferRequest.getFromUser(),
+                            shareAndReferRequest.getCode());
+
+            if (!shareAndReferEntity.isPresent()
+                    || shareAndReferEntity.get().getType().equalsIgnoreCase(
+                            RewardTypes.REFER_SUCCESS.getName())) {
+                throw new ShareAndReferException(HttpStatus.BAD_REQUEST, "Invalid Refer Code");
+            }
+
+            //Mark Refer Entry to SUCCESS
+            shareAndReferEntity.get().setType(RewardTypes.REFER_SUCCESS.getName());
+            shareAndReferRepository.save(shareAndReferEntity.get());
+
+            //Create rewards for referral and referee
+            List<String> customerIds = new ArrayList<>();
+            customerIds.add(shareAndReferEntity.get().getFromUser());
+            customerIds.add(shareAndReferRequest.getFromUser());
+            rewardsService.createRewards(customerIds);
+        } catch (ShareAndReferException ex) {
+            log.error("Invalid refer code: {}",
+                    shareAndReferRequest.toString());
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Something went wrong while applying refer code: {}",
+                    shareAndReferRequest.toString());
+            throw new ShareAndReferException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Something went wrong! Please try again");
+        }
 
         return populateShareAndReferResponse(ResponseConstants.REFERRED_SCRATCH_CARD_WON_MSG);
     }
@@ -157,7 +199,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private Integer getRewardThreshold() {
         //TODO call admin to get threshold
-        return 1000;
+        return 100;
     }
 
     private Integer getShareRewardPoints() {
@@ -167,6 +209,6 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private Integer getReferRewardPoints() {
         //TODO call admin to get reward points
-        return 1000;
+        return 100;
     }
 }

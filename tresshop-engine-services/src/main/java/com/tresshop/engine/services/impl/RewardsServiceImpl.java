@@ -1,5 +1,6 @@
 package com.tresshop.engine.services.impl;
 
+import com.tresshop.engine.base.exception.NotFoundException;
 import com.tresshop.engine.base.exception.RewardException;
 import com.tresshop.engine.base.exception.RewardNotFoundException;
 import com.tresshop.engine.base.utils.UUIDUtils;
@@ -7,7 +8,10 @@ import com.tresshop.engine.client.constants.ResponseConstants;
 import com.tresshop.engine.client.enums.RewardStatus;
 import com.tresshop.engine.client.enums.RewardTypes;
 import com.tresshop.engine.client.rewards.RewardResponse;
+import com.tresshop.engine.client.rewards.Rewards;
+import com.tresshop.engine.client.rewards.WalletInfo;
 import com.tresshop.engine.services.RewardsService;
+import com.tresshop.engine.services.WalletService;
 import com.tresshop.engine.storage.entity.RewardsEntity;
 import com.tresshop.engine.storage.repository.RewardsRepository;
 import org.slf4j.Logger;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,6 +34,9 @@ public class RewardsServiceImpl implements RewardsService {
 
     @Autowired
     private RewardsRepository rewardsRepository;
+
+    @Autowired
+    private WalletService walletService;
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -51,7 +59,25 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     @Override
-    public RewardResponse redeemReward(String rewardId) {
+    public void createRewards(List<String> customerIds) {
+        List<RewardsEntity> rewardsEntities =
+                customerIds.parallelStream()
+                        .map(s -> populateRewardsEntity(s, RewardStatus.PENDING.getName()))
+                        .collect(Collectors.toList());
+
+        try {
+            log.info("Creating Reward for customer ids: {}", customerIds);
+            rewardsRepository.saveAll(rewardsEntities);
+        } catch (Exception ex) {
+            log.error("Exception while creating reward for customer id: {} with exception: {}",
+                    customerIds, ex.getMessage());
+            throw new RewardException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Something went wrong while creating reward");
+        }
+    }
+
+    @Override
+    public Rewards redeemReward(String rewardId) {
         try {
             log.info("Fetching reward with reward id: {}", rewardId);
             Optional<RewardsEntity> rewardsEntity = rewardsRepository.findById(rewardId);
@@ -66,8 +92,18 @@ public class RewardsServiceImpl implements RewardsService {
                 throw new RewardException(HttpStatus.BAD_REQUEST, "Reward already redeemed");
             }
 
+            WalletInfo walletInfo = null;
+
+            //Update wallet for this customer if reward is PRICE
+            if (RewardTypes.PRICE.getName().equalsIgnoreCase(rewardsEntity.get().getRewardType())
+                    && !rewardsEntity.get().getDescription().equalsIgnoreCase("0")) {
+                walletInfo = walletService.updateAmount(
+                        rewardsEntity.get().getCustomerId(),
+                        Double.valueOf(rewardsEntity.get().getDescription()));
+            }
+
             updateRewardStatus(RewardStatus.COMPLETED.getName(), rewardId);
-            return populateRewardResponse(
+            RewardResponse rewardResponse = populateRewardResponse(
                     String.format(
                             ResponseConstants.REDEEM_REWARD_SUCCESS_MSG,
                             rewardsEntity.get().getDescription(),
@@ -76,6 +112,11 @@ public class RewardsServiceImpl implements RewardsService {
                     rewardsEntity.get().getRewardId(),
                     rewardsEntity.get().getRewardType(),
                     RewardStatus.COMPLETED.getName());
+
+            List<RewardResponse> reward = new ArrayList<>();
+            reward.add(rewardResponse);
+
+            return populateRewards(reward, walletInfo != null ? walletInfo.getAmount().toString() : null, null);
         } catch (RewardNotFoundException ex) {
             log.error("Reward {} not found", rewardId);
             throw ex;
@@ -91,36 +132,47 @@ public class RewardsServiceImpl implements RewardsService {
         }
     }
 
+    private Rewards populateRewards(List<RewardResponse> rewardResponses, String totalPrice, String totalPoints) {
+        Rewards rewards = new Rewards();
+        rewards.setRewards(rewardResponses);
+        rewards.setTotalPoints(totalPoints);
+        rewards.setTotalPrice(totalPrice);
+        return rewards;
+    }
+
     @Override
-    public List<RewardResponse> getAllRewards(String customerId) {
+    public Rewards getAllRewards(String customerId) {
         List<RewardResponse> rewardResponses = new ArrayList<>();
+        AtomicInteger totalPoints = new AtomicInteger(0);
         try {
             log.info("Fetching rewards with customer id: {}", customerId);
             Optional<List<RewardsEntity>> rewardsEntities = rewardsRepository.findAllRewardsForCustomer(customerId);
             if (rewardsEntities.isPresent()) {
-                rewardResponses = rewardsEntities.get().stream().map(rewardsEntity -> {
-                    if (RewardStatus.COMPLETED.getName().equalsIgnoreCase(rewardsEntity.getStatus())) {
-                        return populateRewardResponse(
-                                rewardsEntity.getDescription(),
-                                rewardsEntity.getRewardId(),
-                                rewardsEntity.getRewardType(),
-                                rewardsEntity.getStatus());
-                    } else {
-                        return populateRewardResponse(
-                                null,
-                                rewardsEntity.getRewardId(),
-                                null,
-                                rewardsEntity.getStatus());
-                    }
-                }).collect(Collectors.toList());
+                rewardResponses = rewardsEntities.get().stream().map(rewardsEntity -> populateRewardResponse(
+                        rewardsEntity.getDescription(),
+                        rewardsEntity.getRewardId(),
+                        rewardsEntity.getRewardType(),
+                        rewardsEntity.getStatus())).collect(Collectors.toList());
             }
+
         } catch (Exception ex) {
             log.error("Exception while fetching rewards for customer id: {} with exception: {}",
                     customerId, ex.getMessage());
             throw new RewardException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Something went wrong while fetching rewards");
         }
-        return rewardResponses;
+
+        Double totalPrice = 0.0;
+        try {
+            WalletInfo walletInfo = walletService.getCustomerWalletInfo(customerId);
+            if (null != walletInfo) {
+                totalPrice = walletInfo.getAmount();
+            }
+        } catch (Exception ex) {
+            log.error("Unable to fetch wallet for customer id: {} with exception: {}",
+                    customerId, ex.getMessage());
+        }
+        return populateRewards(rewardResponses, String.valueOf(totalPrice), String.valueOf(totalPoints));
     }
 
     private void updateRewardStatus(String rewardStatus, String rewardId) {
@@ -161,7 +213,8 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     private RewardResponse populateRewardResponse(
-            String message, String rewardId, String rewardType, String status) {
+            String message, String rewardId, String rewardType,
+            String status) {
         RewardResponse rewardResponse = new RewardResponse();
         rewardResponse.setDescription(message);
         rewardResponse.setRewardId(rewardId);

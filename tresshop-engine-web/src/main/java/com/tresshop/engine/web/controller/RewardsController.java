@@ -1,6 +1,7 @@
 package com.tresshop.engine.web.controller;
 
 import com.tresshop.engine.client.rewards.RewardResponse;
+import com.tresshop.engine.client.rewards.Rewards;
 import com.tresshop.engine.services.RewardsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,13 @@ public class RewardsController {
     RewardsService rewardsService;
 
     @GetMapping(value = "/{customerId}")
-    public ResponseEntity<List<RewardResponse>> getAllRewards(@PathVariable String customerId) {
+    public ResponseEntity<Rewards> getAllRewards(@PathVariable String customerId) {
         return new ResponseEntity<>(
                 rewardsService.getAllRewards(customerId), HttpStatus.OK);
     }
 
     @PostMapping(value = "redeem/{rewardId}")
-    public ResponseEntity<RewardResponse> redeemReward(@PathVariable String rewardId) {
+    public ResponseEntity<Rewards> redeemReward(@PathVariable String rewardId) {
         return new ResponseEntity<>(
                 rewardsService.redeemReward(rewardId), HttpStatus.OK);
     }
