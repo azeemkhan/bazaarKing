@@ -11,6 +11,7 @@ import com.tresshop.engine.client.rewards.RewardResponse;
 import com.tresshop.engine.client.rewards.Rewards;
 import com.tresshop.engine.client.rewards.WalletInfo;
 import com.tresshop.engine.services.RewardsService;
+import com.tresshop.engine.services.ShareAndReferService;
 import com.tresshop.engine.services.WalletService;
 import com.tresshop.engine.storage.entity.RewardsEntity;
 import com.tresshop.engine.storage.repository.RewardsRepository;
@@ -37,6 +38,9 @@ public class RewardsServiceImpl implements RewardsService {
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private ShareAndReferService shareAndReferService;
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -137,13 +141,13 @@ public class RewardsServiceImpl implements RewardsService {
         rewards.setRewards(rewardResponses);
         rewards.setTotalPoints(totalPoints);
         rewards.setTotalPrice(totalPrice);
+        rewards.setThresholdPrice(String.valueOf(getRewardPriceThresholdValue()));
         return rewards;
     }
 
     @Override
     public Rewards getAllRewards(String customerId) {
         List<RewardResponse> rewardResponses = new ArrayList<>();
-        AtomicInteger totalPoints = new AtomicInteger(0);
         try {
             log.info("Fetching rewards with customer id: {}", customerId);
             Optional<List<RewardsEntity>> rewardsEntities = rewardsRepository.findAllRewardsForCustomer(customerId);
@@ -172,6 +176,8 @@ public class RewardsServiceImpl implements RewardsService {
             log.error("Unable to fetch wallet for customer id: {} with exception: {}",
                     customerId, ex.getMessage());
         }
+        Integer totalPoints = shareAndReferService.getTotalPoints(customerId);
+
         return populateRewards(rewardResponses, String.valueOf(totalPrice), String.valueOf(totalPoints));
     }
 
@@ -210,6 +216,11 @@ public class RewardsServiceImpl implements RewardsService {
     private Integer getRewardPriceValue() {
         //TODO Get it from admin table
         return 10;
+    }
+
+    private Integer getRewardPriceThresholdValue() {
+        //TODO Get it from admin table
+        return 100;
     }
 
     private RewardResponse populateRewardResponse(

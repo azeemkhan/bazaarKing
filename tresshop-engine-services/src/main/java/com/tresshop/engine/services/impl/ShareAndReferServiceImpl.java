@@ -93,7 +93,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
             if (!shareAndReferEntity.isPresent()
                     || shareAndReferEntity.get().getType().equalsIgnoreCase(
-                            RewardTypes.REFER_SUCCESS.getName())) {
+                    RewardTypes.REFER_SUCCESS.getName())) {
                 throw new ShareAndReferException(HttpStatus.BAD_REQUEST, "Invalid Refer Code");
             }
 
@@ -122,6 +122,12 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
     }
 
     @Override
+    public Integer getTotalPoints(String customerId) {
+        int shareCounts = fetchShareCount(customerId);
+        return (shareCounts * getShareRewardPoints()) % getRewardThreshold();
+    }
+
+    @Override
     public ShareAndReferResponse share(ShareAndReferRequest shareAndReferRequest) {
         ShareAndReferEntity shareAndReferEntity =
                 shareAndReferMapper.populateShareAndReferEntity(
@@ -139,15 +145,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Something went wrong while inserting share");
         }
-        int shareCounts = 0;
-        try {
-            shareCounts = shareAndReferRepository.findCountUserDataByType(
-                    shareAndReferRequest.getFromUser(),
-                    RewardTypes.SHARE.getName());
-        } catch (Exception ex) {
-            log.error("Something went wrong while fetching share from: {}, type: {}",
-                    shareAndReferRequest.getFromUser(), shareAndReferRequest.getType());
-        }
+        int shareCounts = fetchShareCount(shareAndReferRequest.getFromUser());
 
         if (isRewardEligible(shareCounts)) {
             rewardsService.createReward(shareAndReferRequest.getFromUser());
@@ -157,6 +155,19 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
         return populateShareAndReferResponse(
                 String.format(ResponseConstants.POINTS_ADDED_SUCCESS_MSG,
                         getShareRewardPoints()));
+    }
+
+    private int fetchShareCount(String customerId) {
+        int shareCounts = 0;
+        try {
+            shareCounts = shareAndReferRepository.findCountUserDataByType(
+                    customerId,
+                    RewardTypes.SHARE.getName());
+        } catch (Exception ex) {
+            log.error("Something went wrong while fetching share from: {}, type: {}",
+                    customerId, RewardTypes.SHARE.getName());
+        }
+        return shareCounts;
     }
 
     private String generateShareCode(ShareAndReferRequest shareAndReferRequest) {
@@ -199,7 +210,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private Integer getRewardThreshold() {
         //TODO call admin to get threshold
-        return 100;
+        return 1000;
     }
 
     private Integer getShareRewardPoints() {
@@ -209,6 +220,6 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private Integer getReferRewardPoints() {
         //TODO call admin to get reward points
-        return 100;
+        return 1000;
     }
 }

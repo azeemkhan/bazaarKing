@@ -16,4 +16,7 @@ public class Rewards {
 
     @JsonProperty("totalPoints")
     private String totalPoints;
+
+    @JsonProperty("thresholdPrice")
+    private String thresholdPrice;
 }
