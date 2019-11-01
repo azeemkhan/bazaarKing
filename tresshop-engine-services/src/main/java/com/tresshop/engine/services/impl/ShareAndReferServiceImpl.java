@@ -1,12 +1,12 @@
 package com.tresshop.engine.services.impl;
 
-import com.tresshop.engine.base.exception.RewardException;
 import com.tresshop.engine.base.exception.ShareAndReferException;
 import com.tresshop.engine.client.constants.ResponseConstants;
 import com.tresshop.engine.client.enums.RewardTypes;
 import com.tresshop.engine.client.enums.ShareTypes;
 import com.tresshop.engine.client.rewards.ShareAndReferRequest;
 import com.tresshop.engine.client.rewards.ShareAndReferResponse;
+import com.tresshop.engine.services.AdminService;
 import com.tresshop.engine.services.RewardsService;
 import com.tresshop.engine.services.ShareAndReferService;
 import com.tresshop.engine.services.mapper.ShareAndReferMapper;
@@ -27,6 +27,9 @@ import java.util.Optional;
 public class ShareAndReferServiceImpl implements ShareAndReferService {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private ShareAndReferMapper shareAndReferMapper;
@@ -182,7 +185,7 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
         } else if (shareAndReferRequest.getType().equalsIgnoreCase(ShareTypes.MERCHANT.getName())) {
             code.append(ShareTypes.MERCHANT.getName()).append("_").append(shareAndReferRequest.getCode());
         } else {
-            throw new RewardException(HttpStatus.BAD_REQUEST, "Not a valid share type");
+            throw new ShareAndReferException(HttpStatus.BAD_REQUEST, "Not a valid share type");
         }
         return code.toString();
     }
@@ -209,17 +212,29 @@ public class ShareAndReferServiceImpl implements ShareAndReferService {
     }
 
     private Integer getRewardThreshold() {
-        //TODO call admin to get threshold
-        return 1000;
+        try {
+            return adminService.getRewardPointThreshold();
+        } catch (Exception ex) {
+            log.error("Failed to fetch Reward threshold with exception: {}", ex.getMessage());
+            throw new ShareAndReferException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!");
+        }
     }
 
     private Integer getShareRewardPoints() {
-        //TODO call admin to get reward points
-        return 100;
+        try {
+            return adminService.getSharePointThreshold();
+        } catch (Exception ex) {
+            log.error("Failed to fetch Share points with exception: {}", ex.getMessage());
+            throw new ShareAndReferException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!");
+        }
     }
 
     private Integer getReferRewardPoints() {
-        //TODO call admin to get reward points
-        return 1000;
+        try {
+            return adminService.getReferPointThreshold();
+        } catch (Exception ex) {
+            log.error("Failed to fetch refer points with exception: {}", ex.getMessage());
+            throw new ShareAndReferException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!");
+        }
     }
 }

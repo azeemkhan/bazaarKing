@@ -3,6 +3,7 @@ package com.tresshop.engine.services.impl;
 import com.tresshop.engine.base.exception.NotFoundException;
 import com.tresshop.engine.base.exception.RewardException;
 import com.tresshop.engine.base.exception.RewardNotFoundException;
+import com.tresshop.engine.base.exception.ShareAndReferException;
 import com.tresshop.engine.base.utils.UUIDUtils;
 import com.tresshop.engine.client.constants.ResponseConstants;
 import com.tresshop.engine.client.enums.RewardStatus;
@@ -10,6 +11,7 @@ import com.tresshop.engine.client.enums.RewardTypes;
 import com.tresshop.engine.client.rewards.RewardResponse;
 import com.tresshop.engine.client.rewards.Rewards;
 import com.tresshop.engine.client.rewards.WalletInfo;
+import com.tresshop.engine.services.AdminService;
 import com.tresshop.engine.services.RewardsService;
 import com.tresshop.engine.services.ShareAndReferService;
 import com.tresshop.engine.services.WalletService;
@@ -32,6 +34,9 @@ import java.util.stream.Collectors;
 
 @Component
 public class RewardsServiceImpl implements RewardsService {
+
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private RewardsRepository rewardsRepository;
@@ -214,13 +219,21 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     private Integer getRewardPriceValue() {
-        //TODO Get it from admin table
-        return 10;
+        try {
+            return adminService.getPriceLimit();
+        } catch (Exception ex) {
+            log.error("Failed to fetch price limit with exception: {}", ex.getMessage());
+            return 0;
+        }
     }
 
     private Integer getRewardPriceThresholdValue() {
-        //TODO Get it from admin table
-        return 100;
+        try {
+            return adminService.getRedeemPriceThreshold();
+        } catch (Exception ex) {
+            log.error("Failed to fetch Share points with exception: {}", ex.getMessage());
+            throw new ShareAndReferException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong!");
+        }
     }
 
     private RewardResponse populateRewardResponse(
