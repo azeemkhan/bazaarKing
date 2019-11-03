@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS likes;
+CREATE TABLE likes (
+	item_liked_id VARCHAR(500) NOT NULL,
+	customer_id VARCHAR(100) NOT NULL,
+	item_type VARCHAR(50) NOT NULL,
+	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+PRIMARY KEY ( customer_id, item_liked_id )
+);

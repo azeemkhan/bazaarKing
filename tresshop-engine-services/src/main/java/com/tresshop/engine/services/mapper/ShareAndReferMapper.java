@@ -17,7 +17,7 @@ public class ShareAndReferMapper {
         shareAndReferEntity.setFromUser(shareAndReferRequest.getFromUser());
         shareAndReferEntity.setToUser(shareAndReferRequest.getToUser());
         shareAndReferEntity.setCode(code);
-        shareAndReferEntity.setPlatform(shareAndReferRequest.getPlatform());
+        shareAndReferEntity.setPlatformToShare(shareAndReferRequest.getPlatform());
         shareAndReferEntity.setType(type.getName());
         shareAndReferEntity.setPoints(rewardPoints);
         shareAndReferEntity.setLastUpdatedTs(Timestamp.valueOf(LocalDateTime.now()));

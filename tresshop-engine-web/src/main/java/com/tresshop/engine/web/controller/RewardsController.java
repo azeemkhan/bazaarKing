@@ -1,7 +1,7 @@
 package com.tresshop.engine.web.controller;
 
 import com.tresshop.engine.client.rewards.RewardResponse;
-import com.tresshop.engine.services.RewardsService;
+import com.tresshop.engine.services.ShareAndRefer.RewardsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
