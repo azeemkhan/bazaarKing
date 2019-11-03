@@ -6,4 +6,6 @@ import com.tresshop.engine.client.rewards.ShareAndReferResponse;
 public interface ShareAndReferService {
     ShareAndReferResponse share(ShareAndReferRequest shareAndReferRequest);
     ShareAndReferResponse refer(ShareAndReferRequest shareAndReferRequest);
+    ShareAndReferResponse redeemRefer(ShareAndReferRequest shareAndReferRequest);
+    Integer getTotalPoints(String customerId);
 }

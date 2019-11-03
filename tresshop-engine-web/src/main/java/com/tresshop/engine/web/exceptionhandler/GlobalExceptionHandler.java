@@ -1,9 +1,6 @@
 package com.tresshop.engine.web.exceptionhandler;
 
-import com.tresshop.engine.base.exception.ExceptionResponse;
-import com.tresshop.engine.base.exception.RewardException;
-import com.tresshop.engine.base.exception.RewardNotFoundException;
-import com.tresshop.engine.base.exception.ShareAndReferException;
+import com.tresshop.engine.base.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,11 +27,25 @@ public class GlobalExceptionHandler {
             return handleRewardNotFoundException(rewardNotFoundException, HttpStatus.BAD_REQUEST, request);
         }
 
+        if (ex instanceof NotFoundException) {
+            NotFoundException notFoundException = (NotFoundException) ex;
+            return handleNotFoundException(notFoundException, HttpStatus.BAD_REQUEST, request);
+        }
+
         return handleGenericExceptionException(ex, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     protected ResponseEntity<ExceptionResponse> handleRewardExceptionException(
             RewardException ex, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<>(
+                new ExceptionResponse(
+                        ex.getStatusCode().value(),
+                        ex.getErrorMsg()),
+                ex.getStatusCode());
+    }
+
+    protected ResponseEntity<ExceptionResponse> handleNotFoundException(
+            NotFoundException ex, HttpStatus status, WebRequest request) {
         return new ResponseEntity<>(
                 new ExceptionResponse(
                         ex.getStatusCode().value(),

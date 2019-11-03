@@ -12,6 +12,12 @@ public interface ShareAndReferRepository extends JpaRepository<ShareAndReferEnti
     @Query(value = "SELECT * FROM share_and_refer t where t.from_user = ?1 AND t.type = ?2", nativeQuery = true)
     Optional<List<ShareAndReferEntity>> findUserDataByType(String userId, String type);
 
+    @Query(value = "SELECT COUNT(1) FROM share_and_refer t where t.from_user = ?1 AND t.type = ?2", nativeQuery = true)
+    Integer findCountUserDataByType(String userId, String type);
+
     @Query(value = "SELECT * FROM share_and_refer t where t.from_user = ?1 AND t.to_user = ?2 AND t.code = ?3", nativeQuery = true)
     Optional<ShareAndReferEntity> findReferredUser(String fromUserId, String toUserId, String code);
+
+    @Query(value = "SELECT * FROM share_and_refer t where t.to_user = ?1 AND t.code = ?2", nativeQuery = true)
+    Optional<ShareAndReferEntity> findUserWithReferCode(String toUserId, String code);
 }

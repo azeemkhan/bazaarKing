@@ -1,7 +1,7 @@
 package com.tresshop.engine.client.enums;
 
 public enum RewardTypes {
-    REFER("refer"), SHARE("share"), PRICE("price"), OFFER("offer");
+    REFER_PENDING("refer_pending"), REFER_SUCCESS("refer_success"), SHARE("share"), PRICE("price"), OFFER("offer");
 
     private String name;
 
