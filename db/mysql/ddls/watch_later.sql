@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS watch_later; 
 CREATE TABLE watch_later (
 	cust_id VARCHAR(100) NOT NULL,
-	product_ids BLOB,
+	product_id VARCHAR(500) NOT NULL,
 	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-PRIMARY KEY ( cust_id )
+PRIMARY KEY ( cust_id, product_id )
 );
